@@ -27,8 +27,17 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 5 === 0 && num % 3 === 0) {
+    return 'FizzBuzz';
+  }
+  if (num % 3 === 0) {
+    return 'Fizz';
+  }
+  if (num % 5 === 0) {
+    return 'Buzz';
+  }
+  return num;
 }
 
 
@@ -43,8 +52,11 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  function factorial(num) {
+    return (num !== 1) ? num * factorial(num - 1) : 1;
+  }
+  return factorial(n);
 }
 
 
@@ -60,8 +72,15 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  function sumTo(start, end) {
+    let sum = 0;
+    for (let i = start; i <= end; i += 1) {
+      sum += i;
+    }
+    return sum;
+  }
+  return sumTo(n1, n2);
 }
 
 
@@ -164,8 +183,12 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  function check(s) {
+    const match = s.match(/(.)(?!.*\1)(?<!\1.+)/);
+    return match && match[1];
+  }
+  return check(str);
 }
 
 
@@ -208,8 +231,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -225,8 +248,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return Number(String(num).split('').reverse().join(''));
 }
 
 
@@ -268,8 +291,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  function check(n) {
+    return String(n).split('')
+      .map((el) => Number(el))
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  }
+  const sum = check(num);
+  return (sum > 9) ? check(sum) : sum;
 }
 
 
@@ -294,8 +323,24 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  let last;
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === '[' || str[i] === '(' || str[i] === '{' || str[i] === '<') {
+      stack.push(str[i]);
+    } else if (str[i] === ']' || str[i] === ')' || str[i] === '}' || str[i] === '>') {
+      if (stack.length) {
+        last = stack[stack.length - 1];
+        if ((last === '[' && str[i] === ']') || (last === '(' && str[i] === ')')
+                    || (last === '{' && str[i] === '}') || (last === '<' && str[i] === '>')) {
+          stack.pop();
+        }
+      } else return false;
+    }
+  }
+  return (!stack.length);
 }
 
 
@@ -319,8 +364,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -359,10 +404,20 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
-}
+function getMatrixProduct(m1, m2) {
+  const newM1 = [].concat(...m1);
+  const newM2 = [].concat(...m2);
 
+  let col = 0;
+
+  for (let i = 0; i < newM1.length; i += 1) {
+    col += newM1[i] * newM2[i];
+  }
+  if (m1.length > 1) {
+    return m2;
+  }
+  return [[col]];
+}
 
 /**
  * Returns the evaluation of the specified tic-tac-toe position.
